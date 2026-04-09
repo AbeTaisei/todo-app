@@ -1,49 +1,39 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
 import "./App.css";
-
+import Todo from "./Todo";
+import Calculator from "./Calculator";
 function App() {
-  const [count, setCount] = useState(0);
   const [isTodoView, setIsTodoView] = useState(false);
-  const isPushedTodo = () => {
+  const [isCalculatorView, setIsCalculatorView] = useState(false);
+  // 1. 表示する「中身」を判定して返す関数
+  const renderContent = () => {
     if (isTodoView) {
-      setIsTodoView(false);
-      console.log("to-do view is closed");
-    } else {
-      setIsTodoView(true);
-      console.log("to-do view is opened");
+      // ToDo画面を表示（作成したTodoコンポーネントを呼び出す）
+      return <Todo onBack={() => setIsTodoView(false)} />;
     }
-  };
-  return (
-    <>
+    if (isCalculatorView) {
+      return <Calculator onBack={() => setIsCalculatorView(false)} />;
+    }
+
+    // それ以外の時（ホーム画面）を表示
+    return (
       <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>俺のアプリ</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+        <h1>俺のアプリ</h1>
+        <button className="to-do" onClick={() => setIsTodoView(true)}>
+          to-do画面へ
         </button>
-        <div>
-          <button className="to-do" onClick={isPushedTodo}>
-            to-do
-          </button>
-        </div>
+        <button
+          className="calculator"
+          onClick={() => setIsCalculatorView(true)}
+        >
+          電卓画面へ
+        </button>
       </section>
-    </>
-  );
+    );
+  };
+
+  // 2. returnの中はこれだけでOK！
+  return <div className="App">{renderContent()}</div>;
 }
 
 export default App;
